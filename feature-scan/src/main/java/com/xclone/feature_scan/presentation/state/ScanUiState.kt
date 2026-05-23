@@ -1,11 +1,18 @@
 package com.xclone.feature_scan.presentation.state
 
+import androidx.compose.ui.text.AnnotatedString
+import com.xclone.detector_engine.models.DetectionResult
+
 data class ScanUiState (
     val input: String = "",
 
     val riskScore: Int = 0,
 
-    val findings: List<String> = emptyList(),
+    val findings: List<DetectionResult> = emptyList(),
 
-    val isScanning: Boolean = false
+    val cleanedText: String = "",
+
+    val isScanning: Boolean = false,
+
+    val highlightedText: AnnotatedString = AnnotatedString("")
 )

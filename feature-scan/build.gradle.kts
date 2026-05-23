@@ -54,4 +54,6 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     implementation(project(":detector-engine"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
 }
