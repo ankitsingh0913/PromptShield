@@ -27,7 +27,7 @@ fun ScanScreen(
         OutlinedTextField(
             value = uiState.input,
             onValueChange = {
-                viewModel.updateInput(it)
+                viewModel.analyze(it)
             },
             label = {
                 Text("Paste Prompt")

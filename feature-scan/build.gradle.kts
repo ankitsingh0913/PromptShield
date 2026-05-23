@@ -52,4 +52,6 @@ dependencies {
 
     //Navigation
     implementation(libs.androidx.navigation.compose)
+
+    implementation(project(":detector-engine"))
 }
