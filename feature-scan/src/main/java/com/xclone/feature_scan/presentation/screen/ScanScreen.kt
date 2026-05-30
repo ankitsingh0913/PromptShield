@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -26,182 +28,221 @@ import com.xclone.feature_scan.presentation.viewmodel.ScanViewModel
 
 @Composable
 fun ScanScreen(
-    sharedText: String?,
+    sharedText: String? = null,
     viewModel: ScanViewModel = hiltViewModel()
 ) {
 
-    val uiState by
-    viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
-    LaunchedEffect(
-        sharedText
-    ) {
+    LaunchedEffect(sharedText) {
         sharedText?.let {
             viewModel.analyze(it)
         }
     }
 
-    val riskColor =
-        getRiskColor(uiState.riskScore)
+    val riskColor = getRiskColor(uiState.riskScore)
 
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
 
-        OutlinedTextField(
-            value = uiState.input,
-            onValueChange = {
-                viewModel.analyze(it)
-            },
-            modifier = Modifier.fillMaxWidth(),
-            label = {
-                Text("Paste prompt")
-            }
-        )
+        // Input Section
+        item {
 
-        Spacer(modifier = Modifier.height(16.dp))
+            OutlinedTextField(
+                value = uiState.input,
+                onValueChange = {
+                    viewModel.analyze(it)
+                },
+                modifier = Modifier.fillMaxWidth(),
+                label = {
+                    Text("Paste Prompt")
+                }
+            )
 
-        Card {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
 
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
+        // Risk Card
+        item {
 
-                Text(
-                    text =
-                        "Profile: ${
-                            uiState.activeProfile.name
-                        }"
-                )
-                Text(
-                    text =
-                        "Risk Score: ${uiState.riskScore}",
-                    color = riskColor,
-                    fontWeight = FontWeight.Bold
-                )
+            Card {
 
-                Spacer(
-                    modifier = Modifier.height(8.dp)
-                )
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
 
-                LinearProgressIndicator(
-                    progress = {
-                        uiState.riskScore / 100f
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    color = riskColor
-                )
+                    Text(
+                        text = "Profile: ${uiState.activeProfile.name}"
+                    )
 
-                Spacer(
-                    modifier = Modifier.height(8.dp)
-                )
+                    Text(
+                        text = "Risk Score: ${uiState.riskScore}",
+                        color = riskColor,
+                        fontWeight = FontWeight.Bold
+                    )
 
-                Text(
-                    text =
-                        "Level: ${
+                    Spacer(
+                        modifier = Modifier.height(8.dp)
+                    )
+
+                    LinearProgressIndicator(
+                        progress = {
+                            uiState.riskScore / 100f
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        color = riskColor
+                    )
+
+                    Spacer(
+                        modifier = Modifier.height(8.dp)
+                    )
+
+                    Text(
+                        text = "Level: ${
                             getRiskLevel(
                                 uiState.riskScore
                             )
                         }"
-                )
+                    )
+                }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = "Highlighted Prompt",
-            style =
-                MaterialTheme.typography.titleMedium
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Card {
+        // Highlighted Prompt
+        item {
 
             Text(
-                text = uiState.highlightedText,
-                modifier = Modifier.padding(16.dp)
+                text = "Highlighted Prompt",
+                style = MaterialTheme.typography.titleMedium
             )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Card {
+
+                Text(
+                    text = uiState.highlightedText,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        // Findings Header
+        item {
 
-        Text(
-            text = "Findings",
-            style =
-                MaterialTheme.typography.titleMedium
-        )
+            Text(
+                text = "Findings",
+                style = MaterialTheme.typography.titleMedium
+            )
 
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
+        }
 
-        LazyColumn {
+        // Findings List
+        items(uiState.findings) { finding ->
 
-            items(uiState.findings) { finding ->
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+            ) {
 
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp)
+                Column(
+                    modifier = Modifier.padding(12.dp)
                 ) {
 
-                    Column(
-                        modifier =
-                            Modifier.padding(12.dp)
-                    ) {
+                    Text(
+                        text = finding.type.name,
+                        fontWeight = FontWeight.Bold
+                    )
 
-                        Text(
-                            text =
-                                finding.type.name,
-                            fontWeight =
-                                FontWeight.Bold
-                        )
+                    Text(
+                        text = finding.matchedText
+                    )
 
-                        Text(
-                            text =
-                                finding.matchedText
-                        )
+                    Text(
+                        text = "Severity: ${finding.severity}"
+                    )
 
-                        Text(
-                            text =
-                                "Severity: ${
-                                    finding.severity
-                                }"
-                        )
-
-                        Text(
-                            text =
-                                "Confidence: ${
-                                    (finding.confidence * 100)
-                                        .toInt()
-                                }%"
-                        )
-                    }
+                    Text(
+                        text = "Confidence: ${
+                            (finding.confidence * 100).toInt()
+                        }%"
+                    )
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        // Cleaned Prompt
+        item {
 
-        Text(
-            text = "Cleaned Prompt",
-            style =
-                MaterialTheme.typography.titleMedium
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Card {
+            Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = uiState.cleanedText,
-                modifier = Modifier.padding(16.dp)
+                text = "Cleaned Prompt",
+                style = MaterialTheme.typography.titleMedium
             )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Card {
+
+                Text(
+                    text = uiState.cleanedText,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        // AI Rewrite Section
+        item {
+
+            Button(
+                onClick = {
+                    viewModel.generateSuggestion()
+                }
+            ) {
+                Text("Generate AI Rewrite")
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = "AI Rewrite Suggestion",
+                style = MaterialTheme.typography.titleMedium
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            if (uiState.isGeneratingSuggestion) {
+
+                CircularProgressIndicator()
+
+            } else {
+
+                Card {
+
+                    Text(
+                        text = uiState.aiSuggestion,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(100.dp))
         }
     }
 }
+
 fun getRiskLevel(
     score: Int
 ): String {

@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/detector-engine" />
             <option value="$PROJECT_DIR$/domain" />
+            <option value="$PROJECT_DIR$/feature-ai-rewrite" />
             <option value="$PROJECT_DIR$/feature-history" />
             <option value="$PROJECT_DIR$/feature-scan" />
             <option value="$PROJECT_DIR$/feature-settings" />

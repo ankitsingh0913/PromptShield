@@ -1,5 +1,6 @@
 package com.xclone.feature_scan.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.xclone.detector_engine.masking.MaskingEngine
@@ -9,11 +10,13 @@ import com.xclone.domain.model.DetectionProfileProvider
 import com.xclone.domain.model.ProfileConfigurationProvider
 import com.xclone.domain.model.PromptHistory
 import com.xclone.domain.model.WorkProfile
+import com.xclone.domain.repository.AiRewriteRepository
 import com.xclone.domain.repository.PromptHistoryRepository
 import com.xclone.domain.repository.SettingsRepository
 import com.xclone.feature_scan.presentation.state.ScanUiState
 import com.xclone.feature_scan.presentation.utils.HighlightTextBuilder
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,7 +28,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ScanViewModel @Inject constructor(
     private val repository: PromptHistoryRepository,
-    private val settingsRepository: SettingsRepository
+    private val settingsRepository: SettingsRepository,
+    private val aiRepository: AiRewriteRepository
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(ScanUiState())
@@ -100,6 +104,53 @@ class ScanViewModel @Inject constructor(
                     timestamp = System.currentTimeMillis()
                 )
             )
+        }
+    }
+
+    fun generateSuggestion() {
+
+        _uiState.value =
+            _uiState.value.copy(
+                isGeneratingSuggestion = true
+            )
+
+        viewModelScope.launch {
+
+            try {
+                _uiState.value =
+                    _uiState.value.copy(
+                        isGeneratingSuggestion = true
+                    )
+
+                val suggestion =
+                    aiRepository.rewritePrompt(
+                        _uiState.value.input,
+                        _uiState.value.findings.map {
+                            it.type.name
+                        }
+                    )
+
+                _uiState.value =
+                    _uiState.value.copy(
+                        aiSuggestion = suggestion,
+                        isGeneratingSuggestion = false
+                    )
+
+            } catch (e: Exception) {
+
+                Log.e(
+                    "AI_REWRITE",
+                    "Error",
+                    e
+                )
+
+                _uiState.value =
+                    _uiState.value.copy(
+                        isGeneratingSuggestion = false,
+                        aiSuggestion =
+                            "Failed to generate suggestion"
+                    )
+            }
         }
     }
 }
