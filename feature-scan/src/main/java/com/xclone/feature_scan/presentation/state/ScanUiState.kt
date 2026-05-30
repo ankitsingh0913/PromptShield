@@ -2,6 +2,7 @@ package com.xclone.feature_scan.presentation.state
 
 import androidx.compose.ui.text.AnnotatedString
 import com.xclone.detector_engine.models.DetectionResult
+import com.xclone.domain.model.WorkProfile
 
 data class ScanUiState (
     val input: String = "",
@@ -14,5 +15,7 @@ data class ScanUiState (
 
     val isScanning: Boolean = false,
 
-    val highlightedText: AnnotatedString = AnnotatedString("")
+    val highlightedText: AnnotatedString = AnnotatedString(""),
+
+    val activeProfile: WorkProfile = WorkProfile.DEVELOPER
 )

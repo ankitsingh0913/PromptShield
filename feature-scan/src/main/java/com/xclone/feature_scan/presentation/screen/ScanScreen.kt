@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -25,11 +26,20 @@ import com.xclone.feature_scan.presentation.viewmodel.ScanViewModel
 
 @Composable
 fun ScanScreen(
+    sharedText: String?,
     viewModel: ScanViewModel = hiltViewModel()
 ) {
 
     val uiState by
     viewModel.uiState.collectAsState()
+
+    LaunchedEffect(
+        sharedText
+    ) {
+        sharedText?.let {
+            viewModel.analyze(it)
+        }
+    }
 
     val riskColor =
         getRiskColor(uiState.riskScore)
@@ -59,6 +69,12 @@ fun ScanScreen(
                 modifier = Modifier.padding(16.dp)
             ) {
 
+                Text(
+                    text =
+                        "Profile: ${
+                            uiState.activeProfile.name
+                        }"
+                )
                 Text(
                     text =
                         "Risk Score: ${uiState.riskScore}",

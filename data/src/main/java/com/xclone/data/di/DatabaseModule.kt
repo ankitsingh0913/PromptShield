@@ -4,8 +4,11 @@ import android.content.Context
 import androidx.room.Room
 import com.xclone.data.local.dao.PromptHistoryDao
 import com.xclone.data.local.database.PromptShieldDatabase
+import com.xclone.data.preferences.SettingsDataStore
 import com.xclone.data.repository.PromptHistoryRepositoryImpl
+import com.xclone.data.repository.SettingsRepositoryImpl
 import com.xclone.domain.repository.PromptHistoryRepository
+import com.xclone.domain.repository.SettingsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,5 +45,16 @@ object DatabaseModule {
         promptHistoryDao: PromptHistoryDao
     ): PromptHistoryRepository {
         return PromptHistoryRepositoryImpl(promptHistoryDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSettingsRepository(
+        dataStore: SettingsDataStore
+    ): SettingsRepository {
+
+        return SettingsRepositoryImpl(
+            dataStore
+        )
     }
 }

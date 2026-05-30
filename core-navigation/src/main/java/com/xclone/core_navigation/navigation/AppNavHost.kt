@@ -10,7 +10,8 @@ import com.xclone.feature_scan.presentation.screen.ScanScreen
 
 @Composable
 fun AppNavHost(
-    navController: NavHostController
+    navController: NavHostController,
+    sharedText: String?
 ) {
 
     NavHost(
@@ -19,7 +20,9 @@ fun AppNavHost(
     ) {
 
         composable(Screen.Scan.route) {
-            ScanScreen()
+            ScanScreen(
+                sharedText
+            )
         }
 
         composable(Screen.History.route) {

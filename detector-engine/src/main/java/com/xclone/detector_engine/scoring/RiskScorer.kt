@@ -2,22 +2,38 @@ package com.xclone.detector_engine.scoring
 
 import com.xclone.detector_engine.models.DetectionResult
 import com.xclone.detector_engine.models.SensitiveType
+import com.xclone.domain.model.ProfileConfiguration
 
 class RiskScorer {
 
-    fun calculatScore(
-        result: List<DetectionResult>
-    ): Int{
+    fun calculateScore(
+        results: List<DetectionResult>,
+        configuration: ProfileConfiguration
+    ): Int {
+
         var score = 0
-        result.forEach {
+
+        results.forEach {
+
             score += when(it.type) {
-                SensitiveType.EMAIL -> 10
-                SensitiveType.PHONE -> 15
-                SensitiveType.API_KEY -> 40
-                SensitiveType.PASSWORD -> 50
-                SensitiveType.CODE_BLOCK -> 20
+
+                SensitiveType.EMAIL ->
+                    configuration.emailWeight
+
+                SensitiveType.PHONE ->
+                    configuration.phoneWeight
+
+                SensitiveType.API_KEY ->
+                    configuration.apiKeyWeight
+
+                SensitiveType.PASSWORD ->
+                    configuration.passwordWeight
+
+                SensitiveType.CODE_BLOCK ->
+                    configuration.codeBlockWeight
             }
         }
+
         return score.coerceIn(0,100)
     }
 }

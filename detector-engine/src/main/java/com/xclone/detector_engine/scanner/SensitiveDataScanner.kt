@@ -4,15 +4,29 @@ import com.xclone.detector_engine.models.DetectionResult
 import com.xclone.detector_engine.models.SensitiveType
 import com.xclone.detector_engine.models.Severity
 import com.xclone.detector_engine.regex.RegexPatterns
+import com.xclone.domain.model.DetectionProfile
 
 class SensitiveDataScanner {
-    fun scan(text: String): List<DetectionResult> {
+    fun scan(
+        text: String,
+        profile: DetectionProfile
+    ): List<DetectionResult> {
         val results = mutableListOf<DetectionResult>()
-        scanEmails(text,results)
-        scanPhones(text, results)
-        scanApiKeys(text, results)
-        scanPasswords(text, results)
-        scanCodeBlocks(text, results)
+        if(profile.detectEmails) {
+            scanEmails(text, results)
+        }
+        if(profile.detectPhones) {
+            scanPhones(text, results)
+        }
+        if(profile.detectApiKeys) {
+            scanApiKeys(text, results)
+        }
+        if(profile.detectPasswords) {
+            scanPasswords(text, results)
+        }
+        if(profile.detectCodeBlocks) {
+            scanCodeBlocks(text, results)
+        }
         return results
     }
 
