@@ -17,5 +17,9 @@ data class ScanUiState (
 
     val highlightedText: AnnotatedString = AnnotatedString(""),
 
-    val activeProfile: WorkProfile = WorkProfile.DEVELOPER
+    val activeProfile: WorkProfile = WorkProfile.DEVELOPER,
+
+    val aiSuggestion: String = "",
+
+    val isGeneratingSuggestion: Boolean = false
 )

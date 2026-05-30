@@ -1,9 +1,27 @@
+import java.util.Properties
 plugins {
     alias(libs.plugins.android.library)
 
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
 }
+
+val localProperties = Properties()
+
+val localPropertiesFile =
+    rootProject.file("local.properties")
+
+if (localPropertiesFile.exists()) {
+
+    localProperties.load(
+        localPropertiesFile.inputStream()
+    )
+}
+
+val geminiApiKey =
+    localProperties.getProperty(
+        "GEMINI_API_KEY"
+    ) ?: ""
 
 android {
     namespace = "com.xclone.data"
@@ -13,11 +31,21 @@ android {
         }
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField(
+            "String",
+            "GEMINI_API_KEY",
+            "\"$geminiApiKey\""
+        )
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -47,4 +75,9 @@ dependencies {
 
     //DataStore
     implementation(libs.androidx.datastore.preferences)
+
+    //Network
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+    implementation(libs.okhttp.logging)
 }

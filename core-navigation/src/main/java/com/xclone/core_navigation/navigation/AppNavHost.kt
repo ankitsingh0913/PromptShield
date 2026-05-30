@@ -20,9 +20,7 @@ fun AppNavHost(
     ) {
 
         composable(Screen.Scan.route) {
-            ScanScreen(
-                sharedText
-            )
+            ScanScreen(sharedText)
         }
 
         composable(Screen.History.route) {
