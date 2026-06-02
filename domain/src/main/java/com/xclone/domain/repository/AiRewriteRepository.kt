@@ -4,6 +4,7 @@ interface AiRewriteRepository {
 
     suspend fun rewritePrompt(
         prompt: String,
-        findings: List<String>
+        findings: List<String>,
+        profileName: String
     ): String
 }
