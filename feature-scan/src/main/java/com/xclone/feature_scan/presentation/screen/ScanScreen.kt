@@ -26,10 +26,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.xclone.domain.model.WorkProfile
+import com.xclone.feature_scan.presentation.state.ScanUiState
 import com.xclone.feature_scan.presentation.viewmodel.ScanViewModel
 
 @Composable

@@ -159,7 +159,8 @@ class ScanViewModel @Inject constructor(
             try {
                 val suggestion = aiRepository.rewritePrompt(
                     _uiState.value.input,
-                    _uiState.value.findings.map { it.type.name }
+                    _uiState.value.findings.map { it.type.name },
+                    currentProfile.name
                 )
 
                 _uiState.value = _uiState.value.copy(
