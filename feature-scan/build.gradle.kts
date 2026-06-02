@@ -35,6 +35,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.material)
 
     implementation(platform(libs.androidx.compose.bom))
@@ -47,6 +48,7 @@ dependencies {
 
     //Hilt
     implementation(libs.hilt.android)
+    debugImplementation(libs.androidx.ui.tooling)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
