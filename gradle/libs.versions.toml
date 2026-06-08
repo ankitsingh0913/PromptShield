@@ -12,6 +12,7 @@ composeBom = "2026.02.01"
 appcompat = "1.7.1"
 material = "1.14.0"
 jetbrainsKotlinJvm = "2.2.10"
+materialIconsExtended = "1.7.8"
 navigation = "2.9.8"
 material3 = "1.4.0"
 navigationRuntimeKtx = "2.9.8"
@@ -25,6 +26,7 @@ uiToolingPreview = "1.11.2"
 uiTooling = "1.11.2"
 
 [libraries]
+androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
