@@ -58,4 +58,7 @@ dependencies {
     implementation(project(":detector-engine"))
     implementation(project(":domain"))
     implementation(project(":data"))
+
+    //Material3
+    implementation(libs.androidx.compose.material.icons.extended)
 }
