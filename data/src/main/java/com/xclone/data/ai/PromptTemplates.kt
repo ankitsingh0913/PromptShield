@@ -71,4 +71,22 @@ object PromptTemplates {
             REWRITTEN PROMPT:
         """.trimIndent()
     }
+
+    fun explainRisk(
+        prompt: String,
+        findings: List<String>,
+        riskScore: Int,
+        profileName: String
+    ): String {
+        val findingsSummary = findings.joinToString(", ") { it.lowercase().replace('_', ' ') }
+        return """
+        You are a security analyst. Explain why the following prompt is risky based on the detected sensitive data.
+        Keep it concise (2-3 sentences max). Tailor the tone to the user's role.
+        Profile: $profileName
+        Risk Score: $riskScore/100
+        Detected Types: $findingsSummary
+        Original Prompt: $prompt
+        Provide only the explanation. Do not rewrite the prompt. Do not add greetings.
+    """.trimIndent()
+    }
 }

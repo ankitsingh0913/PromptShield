@@ -14,5 +14,9 @@ data class ScanUiState(
     val activeProfile: WorkProfile = WorkProfile.DEVELOPER,
     val aiSuggestion: String = "",
     val isGeneratingSuggestion: Boolean = false,
-    val errorMessage: String? = null  // NEW: For error handling
+    val errorMessage: String? = null,  // NEW: For error handling
+
+    val localExplanation: String = "",
+    val aiExplanation: String = "",
+    val isGeneratingAiExplanation: Boolean = false
 )

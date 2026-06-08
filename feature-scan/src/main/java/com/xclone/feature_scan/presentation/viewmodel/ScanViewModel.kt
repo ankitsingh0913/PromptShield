@@ -15,6 +15,7 @@ import com.xclone.domain.repository.PromptHistoryRepository
 import com.xclone.domain.repository.SettingsRepository
 import com.xclone.feature_scan.presentation.state.ScanUiState
 import com.xclone.feature_scan.presentation.utils.HighlightTextBuilder
+import com.xclone.feature_scan.presentation.utils.ExplanationGenerator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -122,7 +123,10 @@ class ScanViewModel @Inject constructor(
                 findings = results,
                 riskScore = score,
                 cleanedText = cleaned,
-                highlightedText = highlighted
+                highlightedText = highlighted,
+                localExplanation = ExplanationGenerator.generateLocal(results, score),
+                aiExplanation = "", // Reset AI explanation on new scan
+                errorMessage = null
             )
 
             // NEW: Only save to history if auto-save is enabled
@@ -172,6 +176,32 @@ class ScanViewModel @Inject constructor(
                 _uiState.value = _uiState.value.copy(
                     isGeneratingSuggestion = false,
                     errorMessage = "AI generation failed: ${e.localizedMessage ?: "Unknown error"}"
+                )
+            }
+        }
+    }
+
+    fun generateAiExplanation() {
+        if (_uiState.value.input.isBlank() || _uiState.value.findings.isEmpty()) return
+
+        _uiState.value = _uiState.value.copy(isGeneratingAiExplanation = true)
+
+        viewModelScope.launch {
+            try {
+                val explanation = aiRepository.explainRisk(
+                    _uiState.value.input,
+                    _uiState.value.findings.map { it.type.name },
+                    _uiState.value.riskScore,
+                    currentProfile.name
+                )
+                _uiState.value = _uiState.value.copy(
+                    aiExplanation = explanation,
+                    isGeneratingAiExplanation = false
+                )
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isGeneratingAiExplanation = false,
+                    aiExplanation = "Failed to generate explanation"
                 )
             }
         }
