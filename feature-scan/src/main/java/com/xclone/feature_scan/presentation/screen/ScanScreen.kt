@@ -16,6 +16,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.material.icons.outlined.Lightbulb
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.xclone.feature_scan.presentation.viewmodel.ScanViewModel
 import kotlinx.coroutines.launch
@@ -118,6 +121,60 @@ fun ScanScreen(
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(text = "Level: ${getRiskLevel(uiState.riskScore)}")
+
+                        // Divider
+                        HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+
+                        // Local Explanation (Instant)
+                        Text(
+                            text = uiState.localExplanation,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 3
+                        )
+
+                        // AI Explanation Button (Only show if findings exist)
+                        if (uiState.findings.isNotEmpty()) {
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Button(
+                                onClick = { viewModel.generateAiExplanation() },
+                                enabled = !uiState.isGeneratingAiExplanation,
+                                modifier = Modifier.fillMaxWidth(),
+                                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
+                            ) {
+                                if (uiState.isGeneratingAiExplanation) {
+                                    CircularProgressIndicator(
+                                        modifier = Modifier.size(16.dp),
+                                        strokeWidth = 2.dp,
+                                        color = MaterialTheme.colorScheme.onPrimary
+                                    )
+                                } else {
+                                    Icon(
+                                        Icons.Outlined.Lightbulb,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(16.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(4.dp))
+                                    Text("Get AI Risk Explanation", fontSize = 12.sp)
+                                }
+                            }
+                        }
+
+                        // AI Explanation Result
+                        if (uiState.aiExplanation.isNotBlank()) {
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Card(
+                                colors = CardDefaults.cardColors(
+                                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+                                )
+                            ) {
+                                Text(
+                                    text = uiState.aiExplanation,
+                                    modifier = Modifier.padding(12.dp),
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
+                        }
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))

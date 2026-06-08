@@ -52,4 +52,20 @@ class AiRewriteRepositoryImpl @Inject constructor(
             ?.text
             ?: "Unable to generate suggestion"
     }
+
+    override suspend fun explainRisk(
+        prompt: String,
+        findings: List<String>,
+        riskScore: Int,
+        profileName: String
+    ): String {
+        val explanationPrompt = PromptTemplates.explainRisk(prompt, findings, riskScore, profileName)
+        val request = GeminiRequest(
+            contents = listOf(Content(parts = listOf(Part(text = explanationPrompt))))
+        )
+
+        val response = api.generateContent(BuildConfig.GEMINI_API_KEY, request)
+        return response.candidates.firstOrNull()?.content?.parts?.firstOrNull()?.text
+            ?: "Unable to generate explanation"
+    }
 }
