@@ -12,5 +12,9 @@ interface PromptHistoryRepository {
     fun getAllPrompts():
             Flow<List<PromptHistory>>
 
+    fun getPromptById(
+        id: Long
+    ): Flow<PromptHistory?>
+
     suspend fun clearHistory()
 }

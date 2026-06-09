@@ -15,6 +15,9 @@ interface PromptHistoryDao {
     @Query("SELECT * FROM PromptHistoryEntity ORDER BY timestamp DESC")
     fun getAllPrompts(): Flow<List<PromptHistoryEntity>>
 
+    @Query("SELECT * FROM PromptHistoryEntity WHERE id = :id LIMIT 1")
+    fun getPromptById(id: Long): Flow<PromptHistoryEntity?>
+
     @Query("DELETE FROM PromptHistoryEntity")
     suspend fun clearHistory()
 }

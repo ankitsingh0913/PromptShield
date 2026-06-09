@@ -26,16 +26,15 @@ class PromptHistoryRepositoryImpl @Inject constructor(
 
     override fun getAllPrompts(): Flow<List<PromptHistory>> {
         return dao.getAllPrompts().map { entities ->
-            entities.map { enitiy ->
-                PromptHistory(
-                    id = enitiy.id,
-                    originalText = enitiy.originalText,
-                    cleanedText = enitiy.cleanedText,
-                    riskScore = enitiy.riskScore,
-                    timestamp = enitiy.timestamp
-                )
-
+            entities.map { entity ->
+                entity.toDomain()
             }
+        }
+    }
+
+    override fun getPromptById(id: Long): Flow<PromptHistory?> {
+        return dao.getPromptById(id).map { entity ->
+            entity?.toDomain()
         }
     }
 
@@ -43,5 +42,14 @@ class PromptHistoryRepositoryImpl @Inject constructor(
         dao.clearHistory()
     }
 
+    private fun PromptHistoryEntity.toDomain(): PromptHistory {
+        return PromptHistory(
+            id = id,
+            originalText = originalText,
+            cleanedText = cleanedText,
+            riskScore = riskScore,
+            timestamp = timestamp
+        )
+    }
 
 }
