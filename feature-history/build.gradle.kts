@@ -48,6 +48,9 @@ dependencies {
     //Navigation Compose
     implementation(libs.androidx.hilt.navigation.compose)
 
+    //Material
+    implementation(libs.androidx.compose.material.icons.extended)
+
     implementation(project(":domain"))
     implementation(project(":data"))
 
