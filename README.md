@@ -328,7 +328,7 @@ Contributions are welcome! Please:
 
 ## 📄 License
 
-This project is open-source and available under the [MIT License](https://github.com/ankitsingh0913/KhataBackend/blob/master/LICENSE).
+This project is open-source and available under the [MIT License](https://github.com/ankitsingh0913/PromptShield/blob/master/LICENSE).
 
 ## 👤 Author
 
