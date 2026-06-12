@@ -73,4 +73,6 @@ dependencies {
     implementation(project(":feature-scan"))
     implementation(project(":feature-history"))
     implementation(project(":feature-settings"))
+
+    implementation(libs.androidx.hilt.navigation.compose)
 }
