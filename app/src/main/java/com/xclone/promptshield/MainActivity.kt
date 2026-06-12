@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
 
                     Box(
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())
                     ) {
                         AppNavHost(
                             navController = navController,
