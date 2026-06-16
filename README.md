@@ -342,7 +342,7 @@ This project is open-source and available under the [MIT License](https://github
 
 **Ankit Singh**
 - GitHub: [@ankitsingh0913](https://github.com/ankitsingh0913)
-- LinkedIn: [ANKIT SINGH](https://linkedin.com/in/yourprofile](https://www.linkedin.com/in/ankit-singh-22466924a/))
+- LinkedIn: [ANKIT SINGH](https://www.linkedin.com/in/ankit-singh-22466924a/)
 
 ---
 
