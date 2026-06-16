@@ -1,9 +1,14 @@
+<div align="center">
+  <img src="Assets/APP_ICON.png" alt="Flow Logo" width="140" height="140">
+  
+  <div align="center">
 
----
 # 🛡️ PromptShield
+</div></div>
 
 **PromptShield** is an Android application that scans text prompts for sensitive or risky information before users share them with AI chatbots like ChatGPT, Gemini, Claude, etc. It detects, highlights, masks, and optionally rewrites prompts using AI — all in real time.
 > **Think of it as a firewall for your prompts.**
+---
 # Download
 Latest APK: [latest v1.0.0](https://github.com/ankitsingh0913/promptshield/releases/latest)
 
@@ -337,7 +342,7 @@ This project is open-source and available under the [MIT License](https://github
 
 **Ankit Singh**
 - GitHub: [@ankitsingh0913](https://github.com/ankitsingh0913)
-- LinkedIn: [ANKIT SINGH](https://linkedin.com/in/yourprofile](https://www.linkedin.com/in/ankit-singh-22466924a/))
+- LinkedIn: [ANKIT SINGH](https://www.linkedin.com/in/ankit-singh-22466924a/)
 
 ---
 
