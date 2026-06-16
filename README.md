@@ -20,7 +20,7 @@ Latest APK: [latest v1.0.0](https://github.com/ankitsingh0913/promptshield/relea
 
 | Scan Screen | History Screen | Settings Screen | History Detail |
 |:-----------:|:--------------:|:---------------:|:--------------:|
-| ![scan](screenshots/scan.png) | ![history](screenshots/history.png) | ![settings](screenshots/settings.png) | ![detail](screenshots/detail.png) |
+| ![scan](Assets/ScanScreen.png) | ![history](Assets/HistoryScreen.png) | ![settings](Assets/SettingScreen.png) | ![detail](Assets/DetailScreen.png) |
 
 
 ---
